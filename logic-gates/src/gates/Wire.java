@@ -1,7 +1,5 @@
 package gates;
 
-import java.util.ArrayList;
-
 public class Wire{
     private boolean flowing;
     private Gate parentGate;
