@@ -57,6 +57,8 @@ public class GatesFrame extends Gate{
 
     public void clear() {
         this.getInternalGates().clear();
+        this.getInputWires().clear();
+        this.getOutputWires().clear();
     }
 
     public void connect(Gate parent, int parentOutputIndex, Gate child, int childInputIndex) {

@@ -113,24 +113,12 @@ public class Gate {
         }
 
         for (Gate gate : this.internalGates) {
-            for (Wire wire : gate.outputWires) {
-                internalWires.add(wire);
-                referenceWires.add(new Wire());
-            }
+            addToLists(gate, internalWires, referenceWires);
         }
 
         ArrayList<Gate> resultInternals = new ArrayList<>();
         for (Gate gate : this.internalGates) {
-            Gate newGate = gate.clone();
-            for (int i = 0; i < newGate.getInputWires().size(); i++) {
-                int index = internalWires.indexOf(gate.getInputWires().get(i));
-                newGate.setInput(i, referenceWires.get(index));
-            }
-            for (int i = 0; i < newGate.getOutputWires().size(); i++) {
-                int index = internalWires.indexOf(gate.getOutputWires().get(i));
-                newGate.setOutput(i, referenceWires.get(index));
-            }
-            resultInternals.add(newGate);
+            generateInternals(gate, internalWires, referenceWires, resultInternals);
         }
 
         ArrayList<Wire> resultInputs = new ArrayList<>();
@@ -141,6 +129,7 @@ public class Gate {
 
         ArrayList<Wire> resultOutputs = new ArrayList<>();
         for (Wire wire : this.outputWires) {
+            System.out.println("Parent " + wire.getParentGate());
             int index = internalWires.indexOf(wire);
             resultOutputs.add(referenceWires.get(index));
         }
@@ -151,6 +140,38 @@ public class Gate {
         }
 
         return returnGate;
+    }
+
+    public void addToLists (Gate inputGate, ArrayList<Wire> internalWires, ArrayList<Wire> referenceWires) {
+        if (inputGate.getInternalGates().size() == 0) {
+                for (Wire wire : inputGate.getOutputWires()) {
+                internalWires.add(wire);
+                referenceWires.add(new Wire());
+                }
+            } else {
+                for (Gate gate : inputGate.getInternalGates()) {
+                    addToLists(gate, internalWires, referenceWires);
+                }
+            }
+    }
+
+    public void generateInternals (Gate inputGate, ArrayList<Wire> internalWires, ArrayList<Wire> referenceWires, ArrayList<Gate> result) {
+        if (inputGate.getInternalGates().size() == 0) {
+            Gate newGate = inputGate.clone();
+            for (int i = 0; i < newGate.getInputWires().size(); i++) {
+                int index = internalWires.indexOf(inputGate.getInputWires().get(i));
+                newGate.setInput(i, referenceWires.get(index));
+            }
+            for (int i = 0; i < newGate.getOutputWires().size(); i++) {
+                int index = internalWires.indexOf(inputGate.getOutputWires().get(i));
+                newGate.setOutput(i, referenceWires.get(index));
+            }
+            result.add(newGate);
+        } else {
+            for (Gate gate : inputGate.getInternalGates()) {
+                generateInternals(gate, internalWires, referenceWires, result);
+            }
+        }
     }
 
     public void disconnect() {

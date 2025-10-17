@@ -89,7 +89,6 @@ public class InterfacePanel extends JPanel {
 
                 //Check if click is on a saved gate
                 for (Gate gate : GatesFrame.savedGates) {
-                    int index = GatesFrame.savedGates.indexOf(gate);
                     if (e.getX() >= gate.getX() && e.getX() <= gate.getX() + gateWidth &&
                         e.getY() >= gate.getY() && e.getY() <= gate.getY() + gateHeight) {
                         Gate newGate = gate.clone();
