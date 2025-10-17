@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class And extends Gate {
     public And(ArrayList<Wire> inputs, ArrayList<Wire> outputs) {
-        super(inputs, outputs, new ArrayList<Gate>());
+        super(inputs, outputs, new ArrayList<Gate>(), "AND");
     }
 
     @Override
@@ -26,6 +26,10 @@ public class And extends Gate {
 
     @Override
     public Gate clone() {
-        return new And(new ArrayList<Wire>() {{add(new Wire()); add(new Wire());}}, new ArrayList<Wire>() {{add(new Wire());}});
+        And newAnd = new And(new ArrayList<Wire>() {{add(new Wire()); add(new Wire());}}, new ArrayList<Wire>() {{add(new Wire());}});
+        newAnd.getInputWires().get(0).setChildGate(newAnd);
+        newAnd.getInputWires().get(1).setChildGate(newAnd);
+        newAnd.getOutputWires().get(0).setParentGate(newAnd);
+        return newAnd;
     }
 }

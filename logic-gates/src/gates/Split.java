@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Split extends Gate {
     public Split(ArrayList<Wire> inputs, ArrayList<Wire> outputs) {
-        super(inputs, outputs, new ArrayList<Gate>());
+        super(inputs, outputs, new ArrayList<Gate>(), "SPLIT");
     }
 
     @Override
@@ -30,6 +30,10 @@ public class Split extends Gate {
 
     @Override
     public Gate clone() {
-        return new Split(new ArrayList<Wire>() {{add(new Wire());}}, new ArrayList<Wire>() {{add(new Wire()); add(new Wire());}});
+        Split newSplit = new Split(new ArrayList<Wire>() {{add(new Wire());}}, new ArrayList<Wire>() {{add(new Wire()); add(new Wire());}});
+        newSplit.getInputWires().get(0).setChildGate(newSplit);
+        newSplit.getOutputWires().get(0).setParentGate(newSplit);
+        newSplit.getOutputWires().get(1).setParentGate(newSplit);
+        return newSplit;
     }
 }

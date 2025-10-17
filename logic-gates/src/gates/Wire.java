@@ -1,9 +1,13 @@
 package gates;
 
+import java.awt.Point;
+
 public class Wire{
     private boolean flowing;
     private Gate parentGate;
     private Gate childGate;
+    private Point startPoint;
+    private Point endPoint;
     
     public Wire() {
         this.flowing = false;
@@ -13,6 +17,10 @@ public class Wire{
 
     public boolean isFlowing() {
         return flowing;
+    }
+
+    public boolean isConnected() {
+        return this.parentGate != null && this.childGate != null;
     }
 
     public void setFlow(boolean flowing) {
@@ -25,6 +33,9 @@ public class Wire{
 
     public void setParentGate(Gate parentGate) {
         this.parentGate = parentGate;
+        if (parentGate != null) {
+            this.parentGate.setStartPoint(this);
+        }
     }
 
     public Gate getChildGate() {
@@ -33,5 +44,24 @@ public class Wire{
 
     public void setChildGate(Gate childGate) {
         this.childGate = childGate;
+        if (childGate != null) {
+            this.childGate.setEndPoint(this);
+        }
+    }
+
+    public Point getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(Point point) {
+        this.startPoint = point;
+    }
+
+    public Point getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(Point point) {
+        this.endPoint = point;
     }
 }

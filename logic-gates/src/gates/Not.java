@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Not extends Gate {
     public Not(ArrayList<Wire> inputs, ArrayList<Wire> outputs) {
-        super(inputs, outputs, new ArrayList<Gate>());
+        super(inputs, outputs, new ArrayList<Gate>(), "NOT");
     }
 
     @Override
@@ -25,6 +25,9 @@ public class Not extends Gate {
 
     @Override
     public Gate clone() {
-        return new Not(new ArrayList<Wire>() {{add(new Wire());}}, new ArrayList<Wire>() {{add(new Wire());}});
+        Not newNot = new Not(new ArrayList<Wire>() {{add(new Wire());}}, new ArrayList<Wire>() {{add(new Wire());}});
+        newNot.getInputWires().get(0).setChildGate(newNot);
+        newNot.getOutputWires().get(0).setParentGate(newNot);
+        return newNot;
     }
 }
