@@ -41,7 +41,7 @@ public class GatesFrame extends Gate{
                 }
             }
         }
-        this.setName(JOptionPane.showInputDialog(null, "Gate name?"));
+        this.setName(JOptionPane.showInputDialog(null, "Gate name:"));
         savedGates.add(this.clone());
         clear();
     }
