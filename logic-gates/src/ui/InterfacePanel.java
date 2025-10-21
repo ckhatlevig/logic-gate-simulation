@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 import gates.*;
 
+/**
+ * Created by Caleb Hatlevig. This is the window the user interacts with. It contains all the logic and visuals necessary for the user to
+ * interact with the program.
+ */
 public class InterfacePanel extends JPanel {
     // Declare a GatesFrame to store information
     private GatesFrame frame = new GatesFrame();
@@ -31,7 +35,7 @@ public class InterfacePanel extends JPanel {
         MouseAdapter mouseHandler = new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // Check if click is on Remove Input
+                // Check if click is on "REMOVE INPUT" button
                 if (e.getX() >= getWidth() - 110 && e.getX() <= getWidth() - 10 &&
                     e.getY() >= getHeight() - 190 && e.getY() <= getHeight() - 140) {
                         if (inputs.size() > 0) {
@@ -48,7 +52,6 @@ public class InterfacePanel extends JPanel {
                     Input newInput = new Input(new ArrayList<Wire>() {{add(new Wire());}});
                     newInput.getOutputWires().get(0).setParentGate(newInput);
                     inputs.add(newInput);
-                    // System.out.println("Added new input");
                     repaint();
                     return;
                 }
@@ -58,7 +61,6 @@ public class InterfacePanel extends JPanel {
                     e.getY() >= getHeight() - 70 && e.getY() <= getHeight() - 20) {
                     frame.save();
                     inputs.clear();
-                    // System.out.println("Saved current circuit");
                     repaint();
                     return;
                 }
@@ -96,7 +98,6 @@ public class InterfacePanel extends JPanel {
                         newGate.setY(e.getY() - gateHeight / 2);
                         frame.addGate(newGate);
                         draggingGate = newGate;
-                        // System.out.println("Added new gate: " + gate.convertString());
                         offsetX = e.getX() - gate.getX();
                         offsetY = e.getY() - gate.getY();
                         return;
@@ -122,14 +123,14 @@ public class InterfacePanel extends JPanel {
 
             @Override
             public void mouseDragged(MouseEvent e) {
+                // Update the dragged gate's position
                 if (draggingGate != null) {
-                    // Update rectangle position
                     draggingGate.setX(e.getX() - offsetX);
                     draggingGate.setY(e.getY() - offsetY);
                     repaint();
                 }
+                // Update wire end point to follow mouse
                 if (draggingWire != null) {
-                    // Update wire end point to follow mouse
                     wireEndPoint = e.getPoint();
                     repaint();
                 }
@@ -137,6 +138,7 @@ public class InterfacePanel extends JPanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                // If the gate is dragged outside the workspace it gets destroyed
                 if (draggingGate != null) {
                     if (e.getX() < 10 || e.getX() > getWidth() - 30 ||
                         e.getY() < 10 || e.getY() > getHeight() - 200) {
@@ -171,6 +173,11 @@ public class InterfacePanel extends JPanel {
         addMouseMotionListener(mouseHandler);
     }
 
+    /**
+     * Helper method to draw a gate to the window.
+     * @param g2d Graphics2D object responsible for visuals
+     * @param gate Gate to be drawn
+     */
     public void drawGate(Graphics2D g2d, Gate gate) {
         int x = gate.getX();
         int y = gate.getY();
@@ -189,6 +196,11 @@ public class InterfacePanel extends JPanel {
         }
     }
 
+    /**
+     * Helper method to draw a wire to the window.
+     * @param g2d Graphics2D object responsible for visuals
+     * @param wire Wire to be drawn
+     */
     public void drawWire(Graphics2D g2d, Wire wire) {
         wire.getParentGate().getSuperContainer().setStartPoint(wire);
         Point start = wire.getStartPoint();
@@ -199,6 +211,11 @@ public class InterfacePanel extends JPanel {
         g2d.drawLine(start.x, start.y, end.x, end.y);
     }
 
+    /**
+     * Helper method to help draw an input to the window.
+     * @param g2d Graphics2D object responsible for visuals
+     * @param input Input to be drawn
+     */
     public void drawInput(Graphics2D g2d, Input input) {
         int x = input.getX();
         int y = input.getY();
@@ -206,6 +223,9 @@ public class InterfacePanel extends JPanel {
         g2d.fillOval(x - 10, y, 20, 20);
     }
 
+    /**
+     * Main method responsible for drawing the window.
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -255,7 +275,6 @@ public class InterfacePanel extends JPanel {
 
         // Draw dragging wire if exists
         if (draggingWire != null) {
-            // System.out.println("Wire X: " + draggingWire.getStartPoint().x + " Y: " + draggingWire.getStartPoint().y + " Super Container X: " + draggingWire.getParentGate().getSuperContainer().getX() + " Y: " + draggingWire.getParentGate().getSuperContainer().getY());
             g2d.setColor(draggingWire.isFlowing() ? Color.RED : Color.BLACK);
             g2d.setStroke(new BasicStroke(3));
             g2d.drawLine(draggingWire.getStartPoint().x, draggingWire.getStartPoint().y, wireEndPoint.x, wireEndPoint.y);

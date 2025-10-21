@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+/**
+ * Created by Caleb Hatlevig. This is a gate representing the workspace. The main utility is to reuse the clone method from the superclass
+ * to save the gate.
+ */
 public class GatesFrame extends Gate{
     public static ArrayList<Gate> savedGates = new ArrayList<>();
 

@@ -2,6 +2,10 @@ package gates;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Caleb Hatlevig. The Gate class works off the assumption of some primitive gates that logically operate themselves. As such
+ * this gate is simpler and rigid, outputing the inverse of the input signal.
+ */
 public class Not extends Gate {
     public Not(ArrayList<Wire> inputs, ArrayList<Wire> outputs) {
         super(inputs, outputs, new ArrayList<Gate>(), "NOT");

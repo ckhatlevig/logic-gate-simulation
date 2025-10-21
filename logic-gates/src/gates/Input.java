@@ -3,6 +3,9 @@ package gates;
 import java.awt.Point;
 import java.util.ArrayList;
 
+/**
+ * Created by Caleb Hatlevig. This gate can be set manually and connected to other gates only as input.
+ */
 public class Input extends Gate {
     public Input(ArrayList<Wire> outputs) {
         super(null, outputs, new ArrayList<Gate>(), "INPUT");
@@ -22,18 +25,13 @@ public class Input extends Gate {
     }
 
     @Override
-    public void setEndPoint(Wire wire) {
-        // System.out.println("Here!");
-    }
-
-    @Override
     public void disconnect() {
         this.getOutputWires().get(0).setParentGate(null);
     }
 
     @Override
     public Gate clone() {
-        // This shoudld never be called
+        // This should never be called
         return null;
     }
 }

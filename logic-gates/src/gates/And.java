@@ -2,6 +2,10 @@ package gates;
 
 import java.util.ArrayList;
 
+/**
+ * Created by Caleb Hatlevig. The Gate class works off the assumption of some primitive gates that logically operate themselves. As such
+ * this gate is simpler and rigid, outputing ON only if both inputs are on.
+ */
 public class And extends Gate {
     public And(ArrayList<Wire> inputs, ArrayList<Wire> outputs) {
         super(inputs, outputs, new ArrayList<Gate>(), "AND");
